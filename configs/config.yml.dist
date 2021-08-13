@@ -1,0 +1,37 @@
+# HTTP server (Gin) settings
+engine:
+  mode: release # debug / release
+  port: 9090
+
+# Collector settings
+collector:
+  parallelism: 4
+  random_delay: 1
+
+# Level-1 cache settings (go-cache) in seconds
+l1_cache:
+  default_expiration: 30
+  cleanup_interval: 30
+
+# Level-2 cache settings (MySQL)
+l2_cache:
+  hostname: db
+  port: 3306
+  username: go_forex_rates
+  password: xxxx
+  database: go_forex_rates
+
+# Providers settings
+providers:
+  emirates:
+    location: Asia/Dubai
+    rates_generated_time: 23:00
+    supported_currencies: ["AED", "ARS", "AUD", "AZN", "BDT", "BGN", "BHD", "BND", "BRL", "BWP", "BYN", "CAD", "CHF", "CLP", "CNH", "CNY", "COP", "CZK", "DKK", "DZD", "EGP", "ETB", "EUR", "GBP", "HKD", "HRK", "HUF", "IDR", "ILS", "INR", "IQD", "ISK", "JOD", "JPY", "KES", "KPW", "KWD", "KZT", "LBP", "LKR", "LYD", "MAD", "MKD", "MUR", "MXN", "MYR", "NGN", "NOK", "NZD", "OMR", "PEN", "PHP", "PKR", "PLN", "QAR", "RON", "RSD", "RUB", "SAR", "SDG", "SEK", "SGD", "SYP", "THB", "TMT", "TND", "TRY", "TTD", "TWD", "TZS", "UGX", "USD", "UZS", "VND", "YER", "ZAR", "ZMW"]
+    historical_preload: true
+    historical_start_date: "2018-11-01"
+  fixer:
+    location: UTC
+    rates_generated_time: 23:59
+    supported_currencies: ["AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BRL", "BSD", "BTC", "BTN", "BWP", "BYN", "BYR", "BZD", "CAD", "CDF", "CHF", "CLF", "CLP", "CNY", "COP", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GGP", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "IMP", "INR", "IQD", "IRR", "ISK", "JEP", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LVL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MUR", "MVR", "MWK", "MXN", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "STD", "SVC", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XCD", "XDR", "XOF", "XPF", "YER", "ZAR", "ZMK", "ZMW", "ZWL"]
+    historical_preload: false
+    api_key: xxxx

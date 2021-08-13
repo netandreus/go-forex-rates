@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  goforexrates:
+    container_name: goforexrates
+    build:
+      context: .
+      dockerfile: ./build/package/Dockerfile
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    stop_grace_period: 10s
+    stop_signal: SIGTERM
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -O /dev/null http://localhost:9090/api/v1/status || exit 1" ]
+      interval: 1m
+      timeout: 20s
+      retries: 10
+
+networks:
+  default:
+    external:
+      name: common_network

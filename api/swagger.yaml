@@ -1,0 +1,126 @@
+basePath: /api/v1
+definitions:
+  model.PingApiResponse:
+    properties:
+      message:
+        description: Message is service response as string
+        type: string
+    type: object
+  model.SuccessApiResponse:
+    properties:
+      base:
+        description: Base the three-letter currency code of the base currency used
+          for this request.
+        type: string
+      date:
+        description: Date date for which historical rates were requested.
+        type: string
+      historical:
+        description: Historical true if a request for historical exchange rates was
+          made.
+        type: boolean
+      rates:
+        additionalProperties:
+          type: number
+        description: Rates exchange rate data for the currencies you have requested.
+        type: object
+      success:
+        description: Success true or false depending on whether or not your API request
+          has succeeded.
+        type: boolean
+      timestamp:
+        description: Timestamp the exact date and time (UNIX time stamp) the given
+          rates were collected.
+        type: integer
+    type: object
+info:
+  contact:
+    email: netandreus@gmail.com
+    name: API Support
+  description: Microservice for obtaining exchange rates
+  license:
+    name: MIT
+    url: https://github.com/netandreus/go-forex-rates/blob/master/LICENSE
+  title: Go-forex-rates HTTP REST API server
+  version: "1.0"
+paths:
+  /historical/{provider}/{date}:
+    get:
+      parameters:
+      - description: Provider
+        enum:
+        - emirates
+        - fixer
+        in: path
+        name: provider
+        type: string
+      - description: Rates date (format YYYY-MM-DD)
+        in: path
+        name: date
+        required: true
+        type: string
+      - description: Base currency
+        in: query
+        name: base
+        required: true
+        type: string
+      - description: Quoted currencies, comme separated
+        in: query
+        name: symbols
+        required: true
+        type: string
+      - description: Force do not use any cache
+        in: query
+        name: force
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.SuccessApiResponse'
+      summary: Get historical currency rates
+  /latest/{provider}:
+    get:
+      parameters:
+      - description: Provider
+        enum:
+        - emirates
+        - fixer
+        in: path
+        name: provider
+        type: string
+      - description: Base currency
+        in: query
+        name: base
+        required: true
+        type: string
+      - description: Quoted currencies, comme separated
+        in: query
+        name: symbols
+        required: true
+        type: string
+      - description: Force do not use any cache (except emirates-latest combination)
+        in: query
+        name: force
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.SuccessApiResponse'
+      summary: Get latest currency rates
+  /status:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PingApiResponse'
+      summary: Using for microservice health-check by Docker
+swagger: "2.0"

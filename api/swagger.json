@@ -1,0 +1,181 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Microservice for obtaining exchange rates",
+        "title": "Go-forex-rates HTTP REST API server",
+        "contact": {
+            "name": "API Support",
+            "email": "netandreus@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://github.com/netandreus/go-forex-rates/blob/master/LICENSE"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/historical/{provider}/{date}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get historical currency rates",
+                "parameters": [
+                    {
+                        "enum": [
+                            "emirates",
+                            "fixer"
+                        ],
+                        "type": "string",
+                        "description": "Provider",
+                        "name": "provider",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Rates date (format YYYY-MM-DD)",
+                        "name": "date",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Base currency",
+                        "name": "base",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Quoted currencies, comme separated",
+                        "name": "symbols",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Force do not use any cache",
+                        "name": "force",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.SuccessApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/latest/{provider}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get latest currency rates",
+                "parameters": [
+                    {
+                        "enum": [
+                            "emirates",
+                            "fixer"
+                        ],
+                        "type": "string",
+                        "description": "Provider",
+                        "name": "provider",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Base currency",
+                        "name": "base",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Quoted currencies, comme separated",
+                        "name": "symbols",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Force do not use any cache (except emirates-latest combination)",
+                        "name": "force",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.SuccessApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/status": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Using for microservice health-check by Docker",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PingApiResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.PingApiResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "description": "Message is service response as string",
+                    "type": "string"
+                }
+            }
+        },
+        "model.SuccessApiResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "description": "Base the three-letter currency code of the base currency used for this request.",
+                    "type": "string"
+                },
+                "date": {
+                    "description": "Date date for which historical rates were requested.",
+                    "type": "string"
+                },
+                "historical": {
+                    "description": "Historical true if a request for historical exchange rates was made.",
+                    "type": "boolean"
+                },
+                "rates": {
+                    "description": "Rates exchange rate data for the currencies you have requested.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "number"
+                    }
+                },
+                "success": {
+                    "description": "Success true or false depending on whether or not your API request has succeeded.",
+                    "type": "boolean"
+                },
+                "timestamp": {
+                    "description": "Timestamp the exact date and time (UNIX time stamp) the given rates were collected.",
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+[Unit]
+Description=Go-forex-rates microservice
+After=docker.service
+BindsTo=docker.service
+
+[Service]
+User=admin
+Group=admin
+TimeoutStartSec=0
+TimeoutStopSec=30
+Restart=always
+RestartSec=10
+Environment="PWD=/home/admin/go-forex-rates/current"
+WorkingDirectory=/home/admin/go-forex-rates/current/
+ExecStart=/usr/bin/docker-compose -f /home/admin/go-forex-rates/current/docker-compose.yml up --no-recreate --remove-orphans goforexrates
+ExecStop=/usr/bin/docker-compose -f /home/admin/go-forex-rates/current/docker-compose.yml down
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
