@@ -1,8 +1,12 @@
 # go-forex-rates
 
 <img align="right" width="159px" src="https://i.ibb.co/6wFrSNq/gopher-and-rates.png">
+  
 
+[![License](https://img.shields.io/github/license/netandreus/go-forex-rates.svg?maxAge=2592000)](https://github.com/netadnreus/go-forex-rates/LICENSE)
 [![GoDoc](https://pkg.go.dev/badge/github.com/gin-gonic/gin?status.svg)](https://pkg.go.dev/github.com/netandreus/go-forex-rates?tab=doc)
+[![Go Report Card](https://goreportcard.com/badge/github.com/netandreus/go-forex-rates)](https://goreportcard.com/report/github.com/netandreus/go-forex-rates)
+[![Release](https://img.shields.io/github/release/netandreus/go-forex-rates.svg?style=flat-square)](https://github.com/netandreus/go-forex-rates/releases)
 [![Join the chat at https://gitter.im/netandreus/currency_rates_service](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/netandreus/go-forex-rates?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 **go-forex-rates** - is an HTTP server provides REST API Gateway for multiple currency rates providers.
