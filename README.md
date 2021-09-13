@@ -291,7 +291,7 @@ Generate API docs in folder "api"
 $HOME/go/bin/swag init --output=./api
 ```
 
-You can test API here: ```http://localhost/swagger/index.html```
+You can test API here: ```http://localhost:9090/swagger/index.html```
 
 ## Godoc
 You can run ```Go Documentation Server``` with actual version of documentation with this command:

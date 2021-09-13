@@ -1,10 +1,10 @@
-// Package cache_store use for custom store for caching historical currency rates
-package cache_store
+// Package cachestore use for custom store for caching historical currency rates
+package cachestore
 
 import (
 	"encoding/json"
 	"github.com/eko/gocache/store"
-	"github.com/netandreus/go-forex-rates/internal/pkg/custom_errors"
+	"github.com/netandreus/go-forex-rates/internal/pkg/customerror"
 	"github.com/netandreus/go-forex-rates/internal/pkg/entity"
 	"github.com/netandreus/go-forex-rates/internal/pkg/model"
 	"github.com/netandreus/go-forex-rates/internal/pkg/util"
@@ -117,7 +117,7 @@ func (store *MySQLStore) loadByKey(serviceRequest model.RatesRequest) (string, e
 
 	// Latest data does not stored in database
 	if serviceRequest.Endpoint == util.EndpointLatest {
-		return "", custom_errors.NewNotFoundError("Value not found in MySQLCache store")
+		return "", customerror.NewNotFoundError("Value not found in MySQLCache store")
 	}
 
 	// Remove base currency from symbols
@@ -137,11 +137,11 @@ func (store *MySQLStore) loadByKey(serviceRequest model.RatesRequest) (string, e
 		Where("rate_date = ?", serviceRequest.Date.Format(util.DateFormatEu)).
 		Find(&entities)
 	if result.Error != nil {
-		return "", custom_errors.NewDatabaseError(result.Error.Error())
+		return "", customerror.NewDatabaseError(result.Error.Error())
 	}
 	symbolsCount := int64(len(symbols))
 	if result.RowsAffected < symbolsCount {
-		return "", custom_errors.NewNotFoundError("Value not found in MySQLCache store")
+		return "", customerror.NewNotFoundError("Value not found in MySQLCache store")
 	}
 	// Provider generated time
 	providerGeneratedTime = entities[0].ProviderGeneratedTime
@@ -166,6 +166,9 @@ func (store *MySQLStore) loadByKey(serviceRequest model.RatesRequest) (string, e
 // saveByKey uses internally for save to database
 func (store *MySQLStore) saveByKey(key model.RatesRequest, value model.RatesResponse) error {
 	for quotedCurrency, rate := range value.Rates {
+		if key.BaseCurrency == quotedCurrency {
+			continue
+		}
 		entity := &entity.CurrencyRate{
 			Endpoint:              key.Endpoint,
 			BaseCurrency:          key.BaseCurrency, // Base currency

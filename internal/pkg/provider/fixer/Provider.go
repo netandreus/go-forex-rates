@@ -42,7 +42,7 @@ func New(db *gorm.DB, config *model.ApplicationConfig) *Provider {
 func (p Provider) GetHistoricalRates(serviceRequest model.RatesRequest) (model.RatesResponse, error) {
 	var (
 		err                   error
-		rates                 = make(map[string]float64)
+		rates                 map[string]float64
 		providerGeneratedTime time.Time
 		resp                  *http.Response
 		body                  []byte
@@ -81,7 +81,7 @@ func (p Provider) GetLatestRates(serviceRequest model.RatesRequest) (model.Rates
 	var (
 		serviceResponse       model.RatesResponse
 		err                   error
-		rates                 = make(map[string]float64)
+		rates                 map[string]float64
 		providerGeneratedTime time.Time
 		resp                  *http.Response
 		body                  []byte

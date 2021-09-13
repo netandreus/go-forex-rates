@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/netandreus/go-forex-rates/internal/pkg/custom_errors"
+	"github.com/netandreus/go-forex-rates/internal/pkg/customerror"
 	"github.com/netandreus/go-forex-rates/internal/pkg/entity"
 	"github.com/netandreus/go-forex-rates/internal/pkg/model"
 	"github.com/netandreus/go-forex-rates/internal/pkg/provider"
@@ -24,6 +24,7 @@ import (
 // Code emirates provider code
 const Code = "emirates"
 
+// ApiResponse is Emirates service http api response
 type ApiResponse struct {
 	// HTML table in json field
 	Table string `json:"table"`
@@ -100,7 +101,7 @@ func (p Provider) GetHistoricalRates(serviceRequest model.RatesRequest) (model.R
 	} else {
 		serviceResponse.Rates = make(map[string]float64)
 		serviceResponse.Timestamp = providerGeneratedTime.Unix()
-		return serviceResponse, custom_errors.NewBadRequestError("base currency should be AED, or symbols should be [AED]")
+		return serviceResponse, customerror.NewBadRequestError("base currency should be AED, or symbols should be [AED]")
 	}
 }
 
@@ -184,8 +185,8 @@ func (p Provider) filterRates(rates map[string]float64, baseCurrency string, sym
 // fetchHistoricalRatesAllSymbols - fetches directRates and reverseRates. Return normalized (scale=6) rates
 func (p Provider) fetchHistoricalRatesAllSymbols(date string) (map[string]float64, map[string]float64, time.Time, error) {
 	var (
-		directRates  = make(map[string]float64)
-		reverseRates = make(map[string]float64)
+		directRates  map[string]float64
+		reverseRates map[string]float64
 		providerDate time.Time
 		err          error
 		resp         *http.Response
